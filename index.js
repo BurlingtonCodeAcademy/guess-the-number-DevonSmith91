@@ -31,12 +31,22 @@ async function start() {
   let response = await ask("Was I right?! ")
   if (capitalize(response).charAt(0) === "Y") {
     console.log("I knew it!")
-  //or if it was an incorrect guess 
+    //or if it was an incorrect guess 
   } else if (capitalize(response).charAt(0) === "N") {
     console.log("I NEED TO GUESS AGAIN!")
-  //or if they input something that is not a Yes or No
+    //or if they input something that is not a Yes or No
   } else {
     console.log("That's not an appropriate response.")
   }
   process.exit();
 }
+
+
+//refrain from nesting if else statements for the entire thing. figure out loops and create loops that will make the
+//function be what I want. It will be easier to update later on in the process.
+
+//i need to write a loop that would use a variable that can change.
+//there would need to be one variable for the min value and one variable for the max value.
+//depending on if i tell the program "higher" or "lower" it would need to be able to replace the appropriate values.
+
+//essentially. learn some loops!
