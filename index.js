@@ -39,7 +39,8 @@ async function start() {
   console.log('You entered: ' + secretNumber + "\nNow let me guess!");
 
   //Get the computer to guess a random number between 1 and 100
-  console.log(randNum)
+
+  console.log(randomInteger(lowNum, hiNum))
 
   //give a prompt about asking if the guess was correct
   let response = await ask("Was I right?! ")
@@ -54,19 +55,18 @@ async function start() {
       let highOrLow = await ask("Is your number higher or lower? ")
         //if higher, guess a higher number
         if (capitalize(highOrLow).charAt(0) === "H"){
-          let lowNum = randNum + 1
-          //at this point i need to create a consol.log that will spit out a new random number using the current ranNum as the low number
+          lowNum = randNum + 1
+          //at this point i need to create a console.log that will spit out a new random number using the current ranNum as the low number
           randNum = randomInteger(lowNum, hiNum)
           console.log(randNum)
         //if lower, guess a lower number  
         } else {(capitalize(highOrLow).charAt(0) === "L")
-          let hiNum = randNum - 1
+          hiNum = randNum - 1
           //creatue a console.log that will spit out a random number using the old random number as the higher number.
           randNum = randomInteger(lowNum, hiNum)
           console.log(randNum)}
       //redefine response to continue loop
       console.log(response = await ask("What about this one? "))
-
       //or if they input something that is not a Yes or No
     } else {
       console.log("That's not an appropriate response.")
