@@ -37,7 +37,6 @@ async function start() {
   
   //give a prompt about asking if the guess was correct
   let response = await ask("Was I right?! ")
-  let guess = randomInteger(1,100)
   
   while (response !== "Y") {
     if (capitalize(response).charAt(0) === "Y") {
@@ -47,14 +46,14 @@ async function start() {
       //or if it was an incorrect guess 
     } else if (capitalize(response).charAt(0) === "N") {
       console.log("I NEED TO GUESS AGAIN!" + "\n" + randomInteger(1, 100))
-      console.log(response = await ask("What about this one?"))
-      //HOW DO I REFERENCE THE "RESPONSE" SECTION AGAIN!
+      //redefine response to continue loop
+      console.log(response = await ask("What about this one? "))
       
       //or if they input something that is not a Yes or No
     } else {
       console.log("That's not an appropriate response.")
-      process.exit();
-      
+      //redefine response to continue loop
+      console.log(response = await ask("Please try again.\nWas I right? "))
     }
     
 
