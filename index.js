@@ -40,7 +40,7 @@ async function start() {
 
   //Get the computer to guess a random number between 1 and 100
 
-  console.log(randomInteger(lowNum, hiNum))
+  console.log(randNum)
 
   //give a prompt about asking if the guess was correct
   let response = await ask("Was I right?! ")
@@ -60,18 +60,22 @@ async function start() {
           randNum = randomInteger(lowNum, hiNum)
           console.log(randNum)
         //if lower, guess a lower number  
-        } else {(capitalize(highOrLow).charAt(0) === "L")
+        } else if (capitalize(highOrLow).charAt(0) === "L") {
           hiNum = randNum - 1
           //creatue a console.log that will spit out a random number using the old random number as the higher number.
           randNum = randomInteger(lowNum, hiNum)
           console.log(randNum)}
+          else {
+            console.log("That is not a proper response.\nPlease try again.\n")
+            highOrLow
+          }
       //redefine response to continue loop
-      console.log(response = await ask("What about this one? "))
+      response = await ask("What about this one? ")
       //or if they input something that is not a Yes or No
     } else {
       console.log("That's not an appropriate response.")
       //redefine response to continue loop
-      console.log(response = await ask("Please try again.\nWas I right? "))
+      response = await ask("Please try again.\nWas I right? ")
     }
 
 
