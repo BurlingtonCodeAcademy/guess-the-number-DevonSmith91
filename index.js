@@ -7,8 +7,6 @@ let lowNum = 1
 let hiNum = 100
 let randNum = randomInteger(lowNum, hiNum)
 
-
-
 function ask(questionText) {
   return new Promise((resolve, reject) => {
     rl.question(questionText, resolve);
@@ -30,10 +28,20 @@ start();
 
 async function start() {
   //start off with a prompt to play the game.
-  console.log("Let's play a game where you make up a number and I try to guess it.")
+  console.log("Let's play a game where you make up a number and I try to guess it but I need you to pick the high number")
+  //This works, for the most part. it's off by 1 on the high end. and not plugging a number in throws off the high number later on for 
+  //low and high functionality
+  
+  hiNum = await ask("So what will it be? ")
+  if (hiNum === undefined || hiNum === null) {
+    hiNum = 100
+  } else 
+
+
+  console.log("right now the hi number is " + hiNum)
 
   //allow the user to input a number and have it wait for that to happen
-  let secretNumber = await ask("Pick any number between 1 and 100 and let me know what it is.\nI won't peek, I promise...\n");
+  let secretNumber = await ask("Pick any number between 1 and " + hiNum + " and let me know what it is.\nI won't peek, I promise...\n");
 
   //return said secret number and say it will now guess.
   console.log('You entered: ' + secretNumber + "\nNow let me guess!");
@@ -44,13 +52,8 @@ async function start() {
 
   //give a prompt about asking if the guess was correct
   let response = await ask("Was I right?! ")
-  while (response !== "Y") {
-    if (capitalize(response).charAt(0) === "Y") {
-      console.log("I knew it! I'm smarter then you Human!")
-      //kill the process if it guesses correctly
-      process.exit();
-      //or if it was an incorrect guess 
-    } else if (capitalize(response).charAt(0) === "N") {
+  while (capitalize(response).charAt(0) !== "Y") {
+     if (capitalize(response).charAt(0) === "N") {
       //allow the computer to ask if it is higher or lower
       let highOrLow = await ask("Is your number higher or lower? ")
         //if higher, guess a higher number
@@ -65,6 +68,7 @@ async function start() {
           //creatue a console.log that will spit out a random number using the old random number as the higher number.
           randNum = randomInteger(lowNum, hiNum)
           console.log(randNum)}
+          //added a catch for improper responses
           else {
             console.log("That is not a proper response.\nPlease try again.\n")
             highOrLow
@@ -79,9 +83,12 @@ async function start() {
     }
 
 
-  }
-
+  } 
+    console.log("I knew it! I'm smarter then you Human!")
+    process.exit()
 }
+
+
 //refrain from nesting if else statements for the entire thing. figure out loops and create loops that will make the
 //function be what I want. It will be easier to update later on in the process.
 
@@ -92,3 +99,5 @@ async function start() {
 //essentially. learn some loops!
 
 //instead of worrying about the random number part, focus on getting it to loop until i enter yes
+
+//when game is launched, create a ask await where user will state a number. number will become hiNum for all plugins. run game rest of way
