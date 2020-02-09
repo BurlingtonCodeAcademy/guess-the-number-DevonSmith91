@@ -2,10 +2,7 @@
 const readline = require('readline');
 const rl = readline.createInterface(process.stdin, process.stdout);
 
-//defining the lower and higher number and creating a variable for the random integer
-let lowNum = 1
-let hiNum = 100
-let randNum = randomInteger(lowNum, hiNum)
+
 
 function ask(questionText) {
   return new Promise((resolve, reject) => {
@@ -31,15 +28,17 @@ async function start() {
   console.log("Let's play a game where you make up a number and I try to guess it but I need you to pick the high number")
   //This works, for the most part. it's off by 1 on the high end. and not plugging a number in throws off the high number later on for 
   //low and high functionality
-  
-  hiNum = await ask("So what will it be? ")
-  if (hiNum === undefined || hiNum === null) {
+
+  let hiNum = await ask("So what will it be? ")
+  hiNum = Math.floor(parseInt(hiNum))
+
+  //defining the lower and higher number and creating a variable for the random integer
+  if (isNaN(hiNum)) {
     hiNum = 100
-  } else 
+  }
 
-
-  console.log("right now the hi number is " + hiNum)
-
+  let lowNum = 1
+  let randNum = randomInteger(lowNum, hiNum)
   //allow the user to input a number and have it wait for that to happen
   let secretNumber = await ask("Pick any number between 1 and " + hiNum + " and let me know what it is.\nI won't peek, I promise...\n");
 
@@ -53,26 +52,32 @@ async function start() {
   //give a prompt about asking if the guess was correct
   let response = await ask("Was I right?! ")
   while (capitalize(response).charAt(0) !== "Y") {
-     if (capitalize(response).charAt(0) === "N") {
+    if (capitalize(response).charAt(0) === "N") {
       //allow the computer to ask if it is higher or lower
       let highOrLow = await ask("Is your number higher or lower? ")
-        //if higher, guess a higher number
-        if (capitalize(highOrLow).charAt(0) === "H"){
-          lowNum = randNum + 1
-          //at this point i need to create a console.log that will spit out a new random number using the current ranNum as the low number
-          randNum = randomInteger(lowNum, hiNum)
-          console.log(randNum)
+      while (capitalize(highOrLow).charAt(0) !== "H" && capitalize(highOrLow).charAt(0) !== "L") {
+        highOrLow = await ask("That is not Higher or Lower please try again.\nWas your number higher or lower? ")
+      }
+      if (capitalize(highOrLow).charAt(0) === "H") { //if higher, guess a higher number
+        lowNum = randNum + 1
+        if (hiNum < lowNum) {
+          console.log("Youre Cheating!")
+          process.exit()
+        }
+        //at this point i need to create a console.log that will spit out a new random number using the current ranNum as the low number
+        randNum = randomInteger(lowNum, hiNum)
+        console.log(randNum)
         //if lower, guess a lower number  
-        } else if (capitalize(highOrLow).charAt(0) === "L") {
-          hiNum = randNum - 1
-          //creatue a console.log that will spit out a random number using the old random number as the higher number.
-          randNum = randomInteger(lowNum, hiNum)
-          console.log(randNum)}
-          //added a catch for improper responses
-          else {
-            console.log("That is not a proper response.\nPlease try again.\n")
-            highOrLow
+      } else if (capitalize(highOrLow).charAt(0) === "L") {
+        hiNum = randNum - 1  
+        if (hiNum < lowNum) {
+            console.log("Youre Cheating!")
+            process.exit()
           }
+        //creatue a console.log that will spit out a random number using the old random number as the higher number.
+        randNum = randomInteger(lowNum, hiNum)
+        console.log(randNum)
+      }
       //redefine response to continue loop
       response = await ask("What about this one? ")
       //or if they input something that is not a Yes or No
@@ -83,9 +88,9 @@ async function start() {
     }
 
 
-  } 
-    console.log("I knew it! I'm smarter then you Human!")
-    process.exit()
+  }
+  console.log("I knew it! I'm smarter then you Human!")
+  process.exit()
 }
 
 
