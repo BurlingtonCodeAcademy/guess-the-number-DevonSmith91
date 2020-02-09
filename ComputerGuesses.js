@@ -29,7 +29,7 @@ async function start() {
   //This works, for the most part. it's off by 1 on the high end. and not plugging a number in throws off the high number later on for 
   //low and high functionality
 
-  let hiNum = await ask("So what will it be? ")
+  let hiNum = await ask("So what will the high number be? ")
   hiNum = Math.floor(parseInt(hiNum))
 
   //defining the lower and higher number and creating a variable for the random integer
@@ -39,9 +39,15 @@ async function start() {
 
   let lowNum = 1
   let randNum = randomInteger(lowNum, hiNum)
+  
   //allow the user to input a number and have it wait for that to happen
+  
   let secretNumber = await ask("Pick any number between 1 and " + hiNum + " and let me know what it is.\nI won't peek, I promise...\n");
-
+  secretNumber = Math.floor(parseInt(secretNumber))
+  
+  while (isNaN(secretNumber)) {
+    secretNumber = await ask("That's not a number\nCare to try again? ")
+  }
   //return said secret number and say it will now guess.
   console.log('You entered: ' + secretNumber + "\nNow let me guess!");
 
@@ -106,3 +112,6 @@ async function start() {
 //instead of worrying about the random number part, focus on getting it to loop until i enter yes
 
 //when game is launched, create a ask await where user will state a number. number will become hiNum for all plugins. run game rest of way
+
+//create a function that will use high num + low food / 2 then figure out how to plug that into the loop in its right spot to use the new 
+//high num and low num for the second time through the function
