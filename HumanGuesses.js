@@ -1,8 +1,6 @@
 const readline = require('readline');
 const rl = readline.createInterface(process.stdin, process.stdout);
 
-
-
 function ask(questionText) {
     return new Promise((resolve, reject) => {
         rl.question(questionText, resolve);
@@ -25,12 +23,19 @@ start();
 async function start() {
     console.log("Lets play a game where I pick a number, and you get to try to guess what it is!")
     console.log("The only hints you will get are if my number is higher or lower then your guess.")
-    let response = await ask("What do you say, Yes or No? ")
 
-    if (capitalize(response).charAt(0) !== "Y") {//Not sure how to fix currently, but putting an empty space returns an error
-        console.log("That's boring. Come back when you do want to play.")
-        process.exit()
-    } 
+    // let response = await ask("What do you say, Yes or No? ")
+    // response = response.toString().trim()
+    // console.log(response)
+    
+    // if (response === ''){
+    //     console.log(response)
+         
+    // }
+    // if (capitalize(response).charAt(0) !== "Y") {//Not sure how to fix currently, but putting an empty space returns an error
+    //     console.log("That's boring. Come back when you do want to play.")
+    //     process.exit()
+    // } 
 
     let hiNum = await ask("So what will the high number be? ")
     hiNum = Math.floor(parseInt(hiNum))
@@ -42,17 +47,34 @@ async function start() {
     }
 
     let lowNum = 1
-    let compNum = randomInteger(lowNum, hiNum)
+    const compNum = randomInteger(lowNum, hiNum)
 
-    compNum
+    console.log(compNum)
+    console.log(compNum)
+    console.log(compNum)
     console.log("Awesome! I got my number.")
     let humanGuess = await ask("What will your first guess be? ")
     humanGuess = Math.floor(parseInt(humanGuess))
 
     while (isNaN(humanGuess)) {
         humanGuess = await ask("Could you please try agian?\nWhat will your first number be? ")
+        humanGuess = Math.floor(parseInt(humanGuess))
     }
 
-    
+    //here i need to put something that will allow the comp to say if your guess is higher or lower then 
+    while (humanGuess !== compNum) {
+            console.log("that's not right! try again!")
+            humanGuess = await ask("What will your next guess be?")
+            humanGuess = Math.floor(parseInt(humanGuess))
+            while (isNaN(humanGuess)) {
+                humanGuess = await ask("Could you please try agian?\nWhat will your number be? ")
+                humanGuess = Math.floor(parseInt(humanGuess))
+            }
+            
+    }
 
+    console.log("Congrats! You got it!")
+    process.exit();
 }
+
+//I could make all of the sanitization of the human guesses into a function.
