@@ -47,6 +47,7 @@ async function start() {
   
   while (isNaN(secretNumber)) {
     secretNumber = await ask("That's not a number\nCare to try again? ")
+    secretNumber = Math.floor(parseInt(secretNumber))
   }
   //return said secret number and say it will now guess.
   console.log('You entered: ' + secretNumber + "\nNow let me guess!");
