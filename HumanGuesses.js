@@ -72,16 +72,33 @@ async function start() {
 
     //here i need to put something that will allow the comp to say if your guess is higher or lower then 
     while (humanGuess !== compNum) {
-        if (humanGuess < compNum) {
+        if (humanGuess < lowNum) {
+            humanGuess = await ask("Please have your guess between " + lowNum + " and " + hiNum + ".\nWhat will your guess be? ")
+            humanGuess = Math.floor(parseInt(humanGuess))
+                while (isNaN(humanGuess)) {
+                    humanGuess = await ask("Could you please try agian?\nWhat will your number be? ")
+                    humanGuess = Math.floor(parseInt(humanGuess))
+                }
+        } else if (humanGuess > hiNum) {
+            humanGuess = await ask("Please have your guess between " + lowNum + " and " + hiNum + ".\nWhat will your guess be? ")
+            humanGuess = Math.floor(parseInt(humanGuess))
+                while (isNaN(humanGuess)) {
+                    humanGuess = await ask("Could you please try agian?\nWhat will your number be? ")
+                    humanGuess = Math.floor(parseInt(humanGuess))
+                }
+        }
+        else if (humanGuess < compNum) {
+            lowNum = humanGuess
             console.log("You were not right! Your guess was lower then what I picked.")
             humanGuess = await ask("What will your next guess be? ")
             humanGuess = Math.floor(parseInt(humanGuess))
             while (isNaN(humanGuess)) {
                 humanGuess = await ask("Could you please try agian?\nWhat will your number be? ")
-                humanGuess = Math.floor(parseInt(humanGuess))
-                
+                humanGuess = Math.floor(parseInt(humanGuess))    
             }
+            
         } else if (humanGuess > compNum) {
+            hiNum = humanGuess
             console.log("That's not right! Your guess was higher then what I picked.")
             humanGuess = await ask("What will your next guess be? ")
             humanGuess = Math.floor(parseInt(humanGuess))
