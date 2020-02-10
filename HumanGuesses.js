@@ -27,10 +27,10 @@ async function start() {
     // let response = await ask("What do you say, Yes or No? ")
     // response = response.toString().trim()
     // console.log(response)
-    
+
     // if (response === ''){
     //     console.log(response)
-         
+
     // }
     // if (capitalize(response).charAt(0) !== "Y") {//Not sure how to fix currently, but putting an empty space returns an error
     //     console.log("That's boring. Come back when you do want to play.")
@@ -61,18 +61,36 @@ async function start() {
         humanGuess = Math.floor(parseInt(humanGuess))
     }
 
+    while (humanGuess > hiNum || humanGuess < lowNum) {
+        humanGuess = await ask("Please have your guess between " + lowNum + " and " + hiNum + ".\nWhat will your guess be?")
+        humanGuess = Math.floor(parseInt(humanGuess))
+            while (isNaN(humanGuess)) {
+                humanGuess = await ask("Could you please try agian?\nWhat will your number be? ")
+                humanGuess = Math.floor(parseInt(humanGuess))
+            }
+    }
+
     //here i need to put something that will allow the comp to say if your guess is higher or lower then 
     while (humanGuess !== compNum) {
-            console.log("that's not right! try again!")
-            humanGuess = await ask("What will your next guess be?")
+        if (humanGuess < compNum) {
+            console.log("You were not right! Your guess was lower then what I picked.")
+            humanGuess = await ask("What will your next guess be? ")
+            humanGuess = Math.floor(parseInt(humanGuess))
+            while (isNaN(humanGuess)) {
+                humanGuess = await ask("Could you please try agian?\nWhat will your number be? ")
+                humanGuess = Math.floor(parseInt(humanGuess))
+                
+            }
+        } else if (humanGuess > compNum) {
+            console.log("That's not right! Your guess was higher then what I picked.")
+            humanGuess = await ask("What will your next guess be? ")
             humanGuess = Math.floor(parseInt(humanGuess))
             while (isNaN(humanGuess)) {
                 humanGuess = await ask("Could you please try agian?\nWhat will your number be? ")
                 humanGuess = Math.floor(parseInt(humanGuess))
             }
-            
+        }
     }
-
     console.log("Congrats! You got it!")
     process.exit();
 }
